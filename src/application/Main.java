@@ -2,7 +2,7 @@ package application;
 	
 import java.io.IOException;
 
-import db.DB;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
