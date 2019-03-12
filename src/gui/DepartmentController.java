@@ -89,6 +89,7 @@ private void createDialogForm(Department dep,String absoluteName, Stage parentSt
 		Pane pane = loader.load();
 		DepartmentFormController controller = loader.getController();
 		controller.SetDepartment(dep);
+		controller.SetDepartmentService(new DepartmentService());
 		controller.updateFormData();		
 		Stage dialogStage = new Stage();
 		dialogStage.setTitle("Entre com os dados do Departamento");
