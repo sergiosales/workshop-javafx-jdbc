@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 import application.Main;
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import javafx.collections.FXCollections;
@@ -25,7 +26,7 @@ import model.entities.Department;
 import model.services.DepartmentService;
 import javafx.event.ActionEvent;
 
-public class DepartmentController implements Initializable {
+public class DepartmentController implements Initializable, DataChangeListener {
 	
 	private DepartmentService service;
 	
@@ -90,6 +91,7 @@ private void createDialogForm(Department dep,String absoluteName, Stage parentSt
 		DepartmentFormController controller = loader.getController();
 		controller.SetDepartment(dep);
 		controller.SetDepartmentService(new DepartmentService());
+		controller.subscribeDataChangeListener(this);
 		controller.updateFormData();		
 		Stage dialogStage = new Stage();
 		dialogStage.setTitle("Entre com os dados do Departamento");
@@ -104,6 +106,12 @@ private void createDialogForm(Department dep,String absoluteName, Stage parentSt
 	Alerts.showAlert("Io Exception", "Error",e.getMessage(), AlertType.ERROR);
 	}
 	
+	
+}
+
+@Override
+public void onDataChanged() {
+	updateTableView();
 	
 } 	
 	

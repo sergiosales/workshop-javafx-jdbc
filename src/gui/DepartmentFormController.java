@@ -1,14 +1,17 @@
 package gui;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import gui.listeners.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Constraints;
 import gui.util.Utils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,6 +23,7 @@ public class DepartmentFormController implements Initializable {
 	
 	private Department entinty;
 	private DepartmentService service;
+	private List <DataChangeListener> dataChangeListeners = new ArrayList<>();
 	
 	
 	@FXML
@@ -43,6 +47,12 @@ public class DepartmentFormController implements Initializable {
 		
 	}
 	
+	public void subscribeDataChangeListener(DataChangeListener listener) {
+		dataChangeListeners.add(listener);
+		
+		
+	}
+	
 	
 	@FXML
 	public void onBtSaveAction(ActionEvent event) {
@@ -57,6 +67,7 @@ public class DepartmentFormController implements Initializable {
 		try {
 			entinty = getFormData();
 			service.SaveOrUpdate(entinty);
+			notifyDataChangeListernes();
 			Utils.currentStage(event).close();
 			
 		} catch (Exception e) {
@@ -66,6 +77,14 @@ public class DepartmentFormController implements Initializable {
 		
 	}
 
+	private void notifyDataChangeListernes() {
+	for(DataChangeListener listener :dataChangeListeners) {
+		listener.onDataChanged();
+		
+		
+	}	
+		
+	}
 	private Department getFormData() {
 	Department dep = new Department();
 	dep.setId(Utils.tryParseToInt(txtId.getText()));
